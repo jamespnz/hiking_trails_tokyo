@@ -146,4 +146,41 @@ h2 { margin: 10px 0; font-size: 1.25rem; }
     opacity: 1; /* Removed the 0.8 opacity to keep the color solid */
 }
 
+/* --- Mobile Styling Pass --- */
+@media (max-width: 600px) {
+    header {
+        padding: 15px 10px;
+    }
+
+    .hero h1 {
+        font-size: 1.6rem; /* Slightly smaller to fit on one line */
+        margin-bottom: 15px;
+    }
+
+    .tool-box {
+        margin: 10px;
+        padding: 15px;
+        border-width: 1px; /* Thinner border for cleaner mobile look */
+    }
+
+    .matcher-buttons {
+        flex-direction: column; /* Stack buttons vertically for easy thumb-tapping */
+        width: 100%;
+    }
+
+    .filter-btn {
+        width: 100%;
+        padding: 14px; /* Larger "hit area" for fingers */
+        font-size: 1rem;
+    }
+
+    #trail-grid {
+        padding: 15px;
+        gap: 20px;
+    }
+
+    .card img {
+        height: 180px; /* Shorter images to save vertical scrolling space */
+    }
+}
 
