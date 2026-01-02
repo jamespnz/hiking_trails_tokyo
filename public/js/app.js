@@ -4,16 +4,38 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function loadTrails() {
     try {
-      const response = await fetch("/api/trails");
-      const trails = await response.json();
+        const response = await fetch("/api/trails");
+        const rawData = await response.json(); // 1. Catch the "raw" messy data
 
-      console.log("Data received from server:", trails.length, "rows");
+        // 2. The Cleanup Station
+        const trails = rawData.map(trail => {
+            let cleanTrail = {};
+            for (let key in trail) {
+                // Remove BOM (\uFEFF) and trim whitespace from keys
+                const cleanKey = key.replace(/^\uFEFF/, '').trim();
+                // Trim whitespace from string values
+                cleanTrail[cleanKey] = typeof trail[key] === 'string' ? trail[key].trim() : trail[key];
+            }
+            return cleanTrail;
+        });
 
-      if (!trails || trails.length === 0) {
-        trailGrid.innerHTML =
-          "<p>Connected to database, but no trails found. Run migrate.js again.</p>";
-        return;
-      }
+        console.log("Data cleaned and processed:", trails.length, "rows");
+
+        if (!trails || trails.length === 0) {
+            trailGrid.innerHTML =
+                "<p>Connected to database, but no trails found. Run migrate.js again.</p>";
+            return;
+        }
+
+        // 3. Now pass the CLEAN trails to your other functions
+        displayTrails(trails);      // Renders the grid
+        startCountdowns(trails);   // Starts the 7 PM timer
+        setupFilters(trails);      // (If you have filtering)
+
+    } catch (error) {
+        console.error("Error loading trails:", error);
+    }
+}
 
       // Map the data to the HTML cards
       trailGrid.innerHTML = trails
@@ -80,30 +102,102 @@ window.filterTrails = (level) => {
     console.log(`Filtering for: ${level}`);
     };
 
+// 1. BUILD THE CARDS (Run this once after fetching data)
+function displayTrails(trails) {
+    const container = document.getElementById('trailsContainer');
+    container.innerHTML = ''; 
+
+    trails.forEach(trail => {
+        const card = document.createElement('div');
+        card.className = 'trail-card';
+
+        card.innerHTML = `
+            <img src="https://loremflickr.com/400/250/mountain,forest?lock=${trail.id}" alt="${trail.name}">
+            <div class="card-content">
+                <h3>${trail.name}</h3>
+                <p>Difficulty: ${trail.difficulty}</p>
+                <p class="timer" id="timer-${trail.id}">Calculating...</p> 
+                <button class="explore-btn">Explore</button>
+            </div>
+        `;
+
+        const btn = card.querySelector('.explore-btn');
+        btn.addEventListener('click', () => openModal(trail));
+
+        container.appendChild(card);
+    });
+}
+
+// 2. UPDATE THE TIMERS (Run this every minute)
 function startCountdowns(trails) {
-    const updateAll = () => {
+    const updateTimers = () => {
+        const deadline = new Date();
+        deadline.setHours(19, 0, 0); // 7 PM
+        const now = new Date();
+        const diff = deadline - now;
+
         trails.forEach(trail => {
+            // Find the specific timer element for THIS trail
             const timerElement = document.getElementById(`timer-${trail.id}`);
             if (!timerElement) return;
-
-            // Logic: Assume a "Last Safe Departure" at 7 PM (19:00)
-            const deadline = new Date();
-            deadline.setHours(19, 0, 0);
-
-            const now = new Date();
-            const diff = deadline - now;
 
             if (diff > 0) {
                 const hours = Math.floor(diff / (1000 * 60 * 60));
                 const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                timerElement.innerText = `${hours}h ${minutes}m remaining`;
+                timerElement.innerText = `⏳ ${hours}h ${minutes}m until safe return`;
             } else {
-                timerElement.innerText = "Check local schedule";
+                timerElement.innerText = "⚠️ Check local schedule";
             }
         });
     };
 
-    updateAll(); // Run once immediately so it doesn't wait 60 seconds
-    setInterval(updateAll, 60000); // Then update every minute
+    updateTimers(); 
+    setInterval(updateTimers, 60000);
 }
+
+
+// Function to open modal with trail details
+function openModal(trail) {
+    const modal = document.getElementById('trailModal');
+    const modalBody = document.getElementById('modalBody');
+
+    modalBody.innerHTML = `
+        <img src="${trail.image_url || 'https://loremflickr.com/800/400/mountain'}" alt="${trail.name}" style="width:100%; border-radius:8px;">
+        <h2 style="margin-top:20px;">${trail.name}</h2>
+        <p class="difficulty">Difficulty: ${trail.difficulty}</p>
+        <hr>
+        <h3>The Hike</h3>
+        <p>${trail.editorial || "No description available yet."}</p>
+        
+        <h3>Photography Highlights</h3>
+        <p>${trail.photography_highlights || "Bring your best lens for these views!"}</p>
+        
+        <h3>Landscape & History</h3>
+        <p>${trail.landscape_history || "A path steeped in local culture."}</p>
+    `;
+
+    modal.style.display = "block";
+}
+
+// Inside openModal function
+const photoText = trail.photography_highlights || "Standard forest views. Best during golden hour.";
+const historyText = trail.landscape_history || "A traditional path used by local hikers for generations.";
+
+// Close modal logic
+document.querySelector('.close-button').addEventListener('click', () => {
+    document.getElementById('trailModal').style.display = "none";
+});
+
+window.addEventListener('click', (event) => {
+    const modal = document.getElementById('trailModal');
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+});
+
+// Update your existing card-creation loop:
+// Ensure the "Explore" button has: 
+// button.onclick = () => openModal(trail);
+
+
 
