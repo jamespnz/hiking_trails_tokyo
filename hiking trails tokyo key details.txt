@@ -1,0 +1,39 @@
+cd "C:\Users\James\OneDrive\Documents\PROGRAMMING\Directory website implementation\Dev in progress\hiking_trails_tokyo"
+
+tree "C:\Users\James\OneDrive\Documents\PROGRAMMING\Directory website implementation\Dev in progress\hiking_trails_tokyo" /f
+
+Tokyohiking20251231
+
+https://xpmtuckhtahwtvzphkbo.supabase.co
+
+sb_publishable_Vi7TmCZ9Odb-PWCJFyhXJQ_s7EycolU
+
+
+CREATE TABLE trails (
+  id SERIAL PRIMARY KEY,
+  line_operator TEXT,
+  railway_line TEXT,
+  terminus_station TEXT,
+  station_japanese TEXT,
+  travel_time_from_shinjuku INTEGER,
+  travel_time_from_tokyo INTEGER,
+  attraction_1 TEXT,
+  attraction_1_type TEXT,
+  attraction_1_japanese TEXT,
+  editorial TEXT,
+  attraction_2 TEXT,
+  attraction_2_type TEXT,
+  attraction_2_japanese TEXT,
+  prefecture TEXT,
+  municipality TEXT,
+  elevation_meters INTEGER,
+  difficulty_level TEXT,
+  best_months TEXT,
+  photography_highlights TEXT,
+  transport_notes TEXT,
+  attraction_1_image_url TEXT,
+  image_1_attribution TEXT,
+  attraction_2_image_url TEXT,
+  image_2_attribution TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
