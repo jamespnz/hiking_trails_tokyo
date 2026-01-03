@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             return `
                 <div class="card" data-difficulty="${difficulty}">
-                    <img src="https://loremflickr.com/600/400/japan,nature,hiking/all?lock=${id}" alt="${title}">
+                    <img src="${trail.attraction_1_image_url}" alt="${title}">
                     <div class="card-content">
                         <span class="tag">${trail.prefecture || "Tokyo"}</span>
                         <h2>${title}</h2>
