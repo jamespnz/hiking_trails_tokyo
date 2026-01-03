@@ -7,6 +7,8 @@ try {
 
 const express = require('express');
 const path = require('path');
+
+const publicPath = path.join(__dirname, 'public');
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
@@ -21,10 +23,18 @@ const supabase = createClient(
 // 3. Middleware
 // If your HTML/CSS/JS are in the ROOT folder, use '.' 
 // If they are in a folder called 'public', keep 'public'
-app.use(express.static(path.join(__dirname, '.'))); 
+// 3. Middleware
+// We use 'publicPath' which you already defined at the top
+app.use(express.static(publicPath)); 
 app.use(express.json());
 
-// 4. API Route
+// 4. The Homepage Route
+app.get('/', (req, res) => {
+    // This explicitly tells Express to send the file from your public folder
+    res.sendFile(path.join(publicPath, 'index.html'));
+});
+
+// 5. API Route (Leave this exactly as you have it)
 app.get('/api/trails', async (req, res) => {
     try {
         const { data, error } = await supabase.from('trails').select('*');
@@ -36,8 +46,7 @@ app.get('/api/trails', async (req, res) => {
     }
 });
 
-// 5. Start Server
-// Using '0.0.0.0' allows Railway's internal network to find your app
+// 6. Start Server (Ensure this is at the VERY bottom)
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Server running on port ${PORT}`);
 });
