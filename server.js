@@ -50,3 +50,9 @@ app.get('/api/trails', async (req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Server running on port ${PORT}`);
 });
+
+// This ensures that any request not caught by the API 
+// or static files defaults back to index.html
+app.get('*', (req, res) => {
+    res.sendFile(path.join(publicPath, 'index.html'));
+});

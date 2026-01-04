@@ -191,6 +191,15 @@ h2 { margin: 10px 0; font-size: 1.25rem; }
     }
 }
 
+.view-btn {
+        width: 100%;       /* Full width of the card */
+        display: block;
+        padding: 15px 0;   /* Taller button */
+        font-size: 1.1rem; /* Slightly larger text */
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
 /* Modal Background */
 .modal {
     display: none; 
