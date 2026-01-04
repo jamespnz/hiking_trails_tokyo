@@ -153,6 +153,31 @@ h2 { margin: 10px 0; font-size: 1.25rem; }
     opacity: 1; /* Removed the 0.8 opacity to keep the color solid */
 }
 
+.filter-container {
+    text-align: center;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap; /* Important for mobile! */
+}
+
+.filter-btn {
+    padding: 10px 20px;
+    border: 2px solid #2d5a27;
+    background: white;
+    color: #2d5a27;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.filter-btn.active, .filter-btn:hover {
+    background: #2d5a27;
+    color: white;
+}
+
 /* --- Mobile Styling Pass --- */
 @media (max-width: 600px) {
     header {

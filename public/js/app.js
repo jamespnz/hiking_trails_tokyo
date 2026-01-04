@@ -130,3 +130,25 @@ window.filterTrails = (level) => {
         card.style.display = (level === 'all' || cardDiff.includes(level.toLowerCase())) ? 'block' : 'none';
     });
 };
+
+window.filterByPrefecture = (prefecture) => {
+    const cards = document.querySelectorAll('.card');
+    const buttons = document.querySelectorAll('.filter-btn');
+
+    // Update button visual state
+    buttons.forEach(btn => {
+        btn.classList.toggle('active', btn.innerText === prefecture);
+    });
+
+    // Hide/Show cards
+    cards.forEach(card => {
+        // We look for the 'tag' span we created earlier
+        const cardPrefecture = card.querySelector('.tag').innerText;
+        
+        if (prefecture === 'All' || cardPrefecture.includes(prefecture)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+};
