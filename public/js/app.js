@@ -101,15 +101,16 @@ function openModal(trail) {
     if (!modal || !modalBody) return;
 
     modalBody.innerHTML = `
-        <img src="${trail.attraction_1_image_url || 'https://loremflickr.com/800/400/mountain'}" style="width:100%; border-radius:8px;">
-        <h2 style="margin-top:20px;">${trail.attraction_1}</h2>
-        <p class="difficulty">Difficulty: ${trail.difficulty_level}</p>
-        <hr>
-        <h3>The Hike</h3>
-        <p>${trail.Editorial || "No description available yet."}</p>
-        <h3>Photography Highlights</h3>
-        <p>${trail.photography_highlights || "Bring your best lens!"}</p>
-    `;
+    <img src="${trail.attraction_1_image_url || 'https://loremflickr.com/800/400/mountain'}" 
+         style="width:100%; height:auto; border-radius:8px; display:block;">
+    <h2 style="margin-top:20px;">${trail.attraction_1}</h2>
+    <p class="difficulty"><strong>Difficulty:</strong> ${trail.difficulty_level}</p>
+    <hr>
+    <h3 style="font-size: 1.1rem; margin-top: 15px;">The Hike</h3>
+    <p>${trail.Editorial || "No description available yet."}</p>
+    <h3 style="font-size: 1.1rem; margin-top: 15px;">Photography Highlights</h3>
+    <p>${trail.photography_highlights || "Bring your best lens!"}</p>
+`;
     modal.style.display = "block";
 }
 
