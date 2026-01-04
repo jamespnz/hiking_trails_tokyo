@@ -152,3 +152,22 @@ window.filterByPrefecture = (prefecture) => {
         }
     });
 };
+
+window.sortTrails = () => {
+    const container = document.getElementById('trail-grid');
+    const cards = Array.from(container.getElementsByClassName('card'));
+    const sortValue = document.getElementById('sort-time').value;
+
+    if (sortValue === 'default') return;
+
+    cards.sort((a, b) => {
+        // We extract the number from the text "XX mins from Shinjuku"
+        const timeA = parseInt(a.querySelector('p strong').innerText);
+        const timeB = parseInt(b.querySelector('p strong').innerText);
+
+        return sortValue === 'quickest' ? timeA - timeB : timeB - timeA;
+    });
+
+    // Re-append cards in the new order
+    cards.forEach(card => container.appendChild(card));
+};
