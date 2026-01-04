@@ -300,4 +300,24 @@ h2 { margin: 10px 0; font-size: 1.25rem; }
         grid-template-columns: 1fr;
     }
 }
+.search-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+#trail-search {
+    width: 100%;
+    padding: 12px 20px;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#trail-search:focus {
+    border-color: #2d5a27;
+}
+
 
