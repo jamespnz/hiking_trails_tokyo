@@ -65,30 +65,37 @@ header {
 
 .filter-btn:hover { opacity: 0.8; }
 
-/* Responsive Grid Logic */
+/* Base settings for the grid */
 #trail-grid {
     display: grid;
-    gap: 25px;
-    padding: 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-    /* 3 across on PC */
-    grid-template-columns: repeat(3, 1fr);
-    justify-items: center; /* Keeps cards centered when only 1 or 2 are visible */
+    gap: 20px;
+    padding: 20px;
+    /* This tells the grid: "Make columns as wide as possible, but at least 300px" */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
-@media (max-width: 1024px) {
-    #trail-grid { grid-template-columns: repeat(2, 1fr); }
+/* Mobile-Specific Adjustments (Screens smaller than 600px) */
+@media (max-width: 600px) {
+    #trail-grid {
+        grid-template-columns: 1fr; /* Force 1 column on phones */
+        padding: 10px;
+    }
+    
+    .card h2 {
+        font-size: 1.5rem; /* Make text a bit smaller so it fits */
+    }
+
+    .view-btn {
+        width: 100%; /* Make buttons easier to tap with thumbs */
+        padding: 15px;
+    }
 }
 
-@media (max-width: 768px) {
-    /* 1 across on Mobile */
-    #trail-grid { grid-template-columns: 1fr; }
-}
-
-/* Card Styling */
-.card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; /* This crops the image nicely instead of stretching it */
+    display: block;
 }
 
 .card:hover {
